@@ -3,6 +3,7 @@ node_modules
 .git
 src
 
+.DS_Store
 .gitignore
 Dockerfile
 gulpfile.js

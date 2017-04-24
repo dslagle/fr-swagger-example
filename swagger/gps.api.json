@@ -1,0 +1,25 @@
+{
+  "post": {
+    "tags": [
+      "gps"
+    ],
+    "description": "store GPS information from legacy DB",
+    "parameters": [
+      {
+        "in": "body",
+        "name": "gps",
+        "schema": {
+          "$ref": "../src/schema/gps/gps-set.schema.json"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "OK"
+      },
+      "400": {
+        "description": "Bad Format"
+      }
+    }
+  }
+}

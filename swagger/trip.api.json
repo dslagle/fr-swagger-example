@@ -1,0 +1,25 @@
+{
+  "post": {
+    "tags": [
+      "gps"
+    ],
+    "description": "Store trip information from legacy DB",
+    "parameters": [
+      {
+        "in": "body",
+        "name": "gps",
+        "schema": {
+          "$ref": "../src/schema/trip/trip.schema.json"
+        }
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "OK"
+      },
+      "400": {
+        "description": "Bad Format"
+      }
+    }
+  }
+}

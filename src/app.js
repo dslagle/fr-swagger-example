@@ -1,0 +1,15 @@
+"use strict";
+var express = require("express");
+var http = require("http");
+var body_parser_1 = require("body-parser");
+var routes_1 = require("./routes");
+var schema_1 = require("./schema");
+var PORT = 8080;
+var IP = "0.0.0.0";
+var app = express();
+var server = http.createServer(app);
+app.use(body_parser_1.urlencoded({ extended: true }));
+app.use(body_parser_1.json());
+app.use("/trip", schema_1.SchemaMiddleware(schema_1.SCHEMAS.TRIP_SET), routes_1.Routes.TripRouter);
+app.use("/gps", schema_1.SchemaMiddleware(schema_1.SCHEMAS.GPS_SET), routes_1.Routes.GPSRouter);
+server.listen(PORT, IP);

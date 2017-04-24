@@ -1,0 +1,47 @@
+{
+    "type": "object",
+    "properties": {
+        "DeviceID": {
+            "type": "number"
+        },
+        "ActualDateTime": {
+            "type": "string"
+        },
+        "ReceivedDateTime": {
+            "type": "string"
+        },
+        "Latitude": {
+            "type": "number"
+        },
+        "Longitude": {
+            "type": "number"
+        },
+        "Speed": {
+            "type": "number",
+            "minimum": 0
+        },
+        "Heading": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 360,
+            "exclusiveMaximum": true
+        },
+        "EdgeId": {
+            "type": "number",
+            "minimum": 0
+        },
+        "Percent": {
+            "type": "number",
+            "minimum": 0
+        }
+    },
+    "required": [
+        "DeviceID",
+        "ActualDateTime",
+        "ReceivedDateTime",
+        "Latitude",
+        "Longitude",
+        "Speed",
+        "Heading"
+    ]
+}

@@ -3,11 +3,12 @@
         "module": "commonjs",
         "target": "es5",
         "noImplicitAny": false,
-        "sourceMap": false,
+        "sourceMap": true,
         "lib": [
             "es5",
             "es2015.promise"
-        ]
+        ],
+        "outDir": "./dev"
     },
     "include": [
         "src/**/*.ts"

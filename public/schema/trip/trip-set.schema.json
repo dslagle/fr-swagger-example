@@ -1,0 +1,5 @@
+{
+    "id": "/trip-set",
+    "type": "array",
+    "items": { "$ref": "./trip.schema.json" }
+}

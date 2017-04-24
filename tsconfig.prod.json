@@ -11,7 +11,8 @@
         "outDir": "./public"
     },
     "include": [
-        "src/**/*.ts"
+        "src/**/*.ts",
+        "src/**/*.json"
     ],
     "exclude": [
         "src/aws.ts"

@@ -1,0 +1,10 @@
+node_modules
+.vscode
+.git
+src
+
+.gitignore
+Dockerfile
+gulpfile.js
+tsconfig.json
+tsconfig.prod.json

@@ -15,9 +15,9 @@ exports.SCHEMAS = {
     "TRIP": { key: "/trip.schema.json", schema: trip_schema_1.TRIP_SCHEMA.TRIP },
     "TRIP_SET": { key: "/trip-set.schema.json", schema: trip_schema_1.TRIP_SCHEMA.TRIP_SET }
 };
-var validator = new jsonschema_1.Validator();
+exports.validator = new jsonschema_1.Validator();
 for (var s in exports.SCHEMAS) {
-    validator.addSchema(exports.SCHEMAS[s].schema, exports.SCHEMAS[s].key);
+    exports.validator.addSchema(exports.SCHEMAS[s].schema, exports.SCHEMAS[s].key);
 }
 ;
 exports.SchemaMiddleware = function (schema, methods) {
@@ -27,7 +27,7 @@ exports.SchemaMiddleware = function (schema, methods) {
             next();
             return;
         }
-        var result = validator.validate(request.body, schema.schema);
+        var result = exports.validator.validate(request.body, schema.schema);
         if (result.valid) {
             next();
             return;

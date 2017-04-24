@@ -2,6 +2,7 @@
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
+Object.defineProperty(exports, "__esModule", { value: true });
 var gps_schema_1 = require("./gps/gps.schema");
 var trip_schema_1 = require("./trip/trip.schema");
 var jsonschema_1 = require("jsonschema");

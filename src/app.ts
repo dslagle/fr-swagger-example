@@ -9,7 +9,7 @@ import { SchemaMiddleware, SCHEMAS } from "./schema";
 const PORT = 8080;
 const IP = "0.0.0.0";
 
-const app: Application = express();
+export const app: Application = express();
 const server = http.createServer(app);
 
 app.use(urlencoded({ extended: true }));

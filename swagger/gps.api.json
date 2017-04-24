@@ -21,5 +21,20 @@
         "description": "Bad Format"
       }
     }
+  },
+  "get": {
+    "tags": [
+      "gps"
+    ],
+    "description": "retrieve GPS information from legacy DB",
+    "responses": {
+      "200": {
+        "description": "OK",
+        "schema": { "$ref": "../src/schema/gps/gps.schema.json" }
+      },
+      "404": {
+        "description": "Not Found"
+      }
+    }
   }
 }

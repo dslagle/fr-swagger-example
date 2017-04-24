@@ -18,7 +18,7 @@ export const SCHEMAS = {
     "TRIP_SET": { key: "/trip-set.schema.json", schema: TRIP_SCHEMA.TRIP_SET }
 };
 
-const validator = new Validator();
+export const validator = new Validator();
 
 for (const s in SCHEMAS) {
     validator.addSchema(SCHEMAS[s].schema, SCHEMAS[s].key);

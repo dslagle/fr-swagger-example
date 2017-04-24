@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 exports.router = express.Router();
 exports.router.get("/:id", function (request, response) {

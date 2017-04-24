@@ -7,3 +7,6 @@ exports.router.post("/", function (request, response) {
     console.log(gps.length);
     response.status(200).json({ success: "true" });
 });
+exports.router.get("/", function (request, response) {
+    response.json({ DeviceID: 10, ActualDateTime: "", ReceivedDateTime: "", Heading: 10, Speed: 55, Latitude: 33.567, Longitude: -128.456 });
+});

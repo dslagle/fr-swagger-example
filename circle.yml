@@ -2,7 +2,10 @@ version: 2
 jobs:
   build:
     working_directory: ~/app
-    machine: true
+    docker:
+      - image: ubunto:14.04
+        environment:
+          CIRCLE_TEST_REPORTS: ~/app/test-results
     steps:
       - checkout
       - run:
@@ -11,6 +14,11 @@ jobs:
       - run: echo $CIRCLE_TEST_REPORTS
       - run:
           environment:
-            MOCHA_FILE: $CIRCLE_TEST_REPORTS/mocha/results.xml
+            MOCHA_FILE: $CIRCLE_TEST_REPORTS/results.xml
           name: Run Tests
-          command: mkdir -p $CIRCLE_TEST_REPORTS/mocha && docker run gps-test node_modules/.bin/_mocha --reporter mocha-junit-reporter
+          command: mkdir -p $CIRCLE_TEST_REPORTS && docker run gps-test node_modules/.bin/_mocha --reporter mocha-junit-reporter
+      - store_artifacts:
+          path: test-results/
+          destination: frsd-test-results
+      - store_test_results:
+          path: test-results/

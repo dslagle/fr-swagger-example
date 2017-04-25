@@ -1,10 +1,13 @@
-machine:
-  pre:
-    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
-  services:
-    - docker
-
-test:
-  override:
-    - docker build -t gps-test .
-    - docker run --name gps gps-test node_modules/.bin/_mocha
+version: 2
+jobs:
+  build:
+    working_directory: /app
+    machine: true
+    steps:
+      - checkout
+      - docker:
+          name: Build Docker Image
+          command: docker build -t gps-test .
+      - test:
+          name: Run Tests
+          command: docker run --name gps -d gps-test:1.0.0 node_modules/.bin/_mocha

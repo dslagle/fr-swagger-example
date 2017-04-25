@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/app
     docker:
-      - image: ubunto:14.04
+      - image: ubuntu:14.04
         environment:
           CIRCLE_TEST_REPORTS: ~/app/test-results
     steps:

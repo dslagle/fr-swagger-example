@@ -9,5 +9,7 @@ jobs:
           name: Build Docker Image
           command: docker build -t gps-test .
       - run:
+          environment:
+            CIRCLE_TEST_REPORTS: ~/app/results
           name: Run Tests
           command: mkdir -p $CIRCLE_TEST_REPORTS/mocha && docker run --name gps gps-test node_modules/.bin/_mocha --reporter mocha-junit-reporter --reporter-options mochaFile=$CIRCLE_TEST_REPORTS/mocha/results.xml

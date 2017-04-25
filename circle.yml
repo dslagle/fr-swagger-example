@@ -4,7 +4,10 @@ machine:
   services:
     - docker
 
+docker:
+  override:
+    - docker build -t gps-test:1.0.0 .
+
 test:
   override:
-    - docker build -t gps-test .
-    - docker exec gps-test mocha
+    - docker run --name gps -d gps-test:1.0.0 node_modules/.bin/_mocha

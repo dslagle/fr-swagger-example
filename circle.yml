@@ -5,9 +5,9 @@ jobs:
     machine: true
     steps:
       - checkout
-      - docker:
+      - run:
           name: Build Docker Image
           command: docker build -t gps-test .
-      - test:
+      - run:
           name: Run Tests
           command: docker run --name gps -d gps-test:1.0.0 node_modules/.bin/_mocha

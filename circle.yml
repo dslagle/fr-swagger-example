@@ -5,13 +5,9 @@ jobs:
     machine: true
     steps:
       - checkout
-      - restore_cache:
-          key: {{ checksum "Dockerfile" }}-{{checksum "package.json"}}
       - run:
           name: Build Docker Image
           command: docker build -t gps-test .
-      - save_cache:
-          key: {{ checksum "Dockerfile" }}-{{checksum "package.json"}}
       - run:
           name: Run Tests
-          command: docker run --name gps gps-test node_modules/.bin/_mocha
+          command: docker run --name gps gps-test node_modules/.bin/_mocha --reporter mocha-junit-reporter --reporter-options mochaFile=$CIRCLE_TEST_REPORTS/results.xml

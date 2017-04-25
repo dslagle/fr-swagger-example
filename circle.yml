@@ -1,24 +1,9 @@
-version: 2
-jobs:
-  build:
-    working_directory: ~/app
-    docker:
-      - image: docker:17.04
-        environment:
-          CIRCLE_TEST_REPORTS: ~/app/test-results
-    steps:
-      - checkout
-      - run:
-          name: Build Docker Image
-          command: docker build -t gps-test .
-      - run: echo $CIRCLE_TEST_REPORTS
-      - run:
-          environment:
-            MOCHA_FILE: $CIRCLE_TEST_REPORTS/results.xml
-          name: Run Tests
-          command: mkdir -p $CIRCLE_TEST_REPORTS && docker run gps-test node_modules/.bin/_mocha --reporter mocha-junit-reporter
-      - store_artifacts:
-          path: test-results/
-          destination: frsd-test-results
-      - store_test_results:
-          path: test-results/
+machine:
+  services:
+    - docker
+
+test:
+  override:
+    - docker build -t gps-test .
+    - mkdir -p $CIRCLE_TEST_REPORTS
+    - docker run gps-test node_modules/.bin/_mocha --reporter mocha-junit-reporter

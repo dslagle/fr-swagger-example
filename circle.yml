@@ -1,9 +1,11 @@
 machine:
+  environment:
+    - MOCHA_FILE: $CIRCLE_TEST_REPORTS/mocha/results.xml
   services:
     - docker
 
 test:
   override:
     - docker build -t gps-test .
-    - mkdir -p $CIRCLE_TEST_REPORTS
+    - mkdir -p $CIRCLE_TEST_REPORTS/mocha
     - docker run gps-test node_modules/.bin/_mocha --reporter mocha-junit-reporter

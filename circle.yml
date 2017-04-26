@@ -9,25 +9,28 @@ jobs:
           name: Build Docker Image
           command: docker build -t dsalgle/gps-test:$CIRCLE_SHA1 .
       - run:
+          name: Start Containers
+          command:
+            docker-compose up:
+              environment:
+                DOCKER_IMAGE_TAG: $CIRCLE_SHA1
+      - run: mkdir -p $TEST_REPORT_DIR
+      - run:
           name: Run Tests
           environment:
             TEST_REPORT_DIR: ~/app/test-results
             MOCHA_FILE: $TEST_REPORT_DIR/result.xml
-          commands:
-            - mkdir -p $TEST_REPORT_DIR
-            - docker run gps-test node_modules/.bin/_mocha --reporter mocha-junit-reporter
+          command: docker run gps-test:$CIRCLE_SHA1 --link redis node_modules/.bin/_mocha --reporter mocha-junit-reporter
       - run:
-          name: Push to Docker Hub
+          name: Login to Docker Hub
           environment:
             DOCKER_EMAIL: slagle.derek@gmail.com
             DOCKER_USER: dslagle
-          commands:
-            - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASSWORD
-            - docker push dslagle/gps-test:$CIRCLE_SHA1
-            - docker logout
+          command: docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASSWORD
       - run:
-          name: Deploy to AWS
-          commands:
-            - aws configure set default.region us-east-1
-            - aws configure set default.output json
+          name: Push to Docker
+          command: docker push dslagle/gps-test:$CIRCLE_SHA1
+      - run: docker logout
+      - run: aws configure set default.region us-east-1
+      - run: aws configure set default.output json
 

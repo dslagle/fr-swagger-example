@@ -9,15 +9,15 @@ jobs:
           name: Build Docker Image
           command: docker build -t dsalgle/gps-test:$CIRCLE_SHA1 .
       - run:
-          name: Start Containers
-          command: DOCKER_IMAGE_TAG=$CIRCLE_SHA1 docker-compose up
-      - run: mkdir -p $TEST_REPORT_DIR
+          name: Start Redis
+          command: docker run --name redis redis:3.0.7
+      - run: mkdir -p ~/app/test-results
       - run:
           name: Run Tests
           environment:
             TEST_REPORT_DIR: ~/app/test-results
             MOCHA_FILE: $TEST_REPORT_DIR/result.xml
-          command: docker run gps-test:$CIRCLE_SHA1 --link redis node_modules/.bin/_mocha --reporter mocha-junit-reporter
+          command: docker run --link redis --rm dslagle/gps-test:$CIRCLE_SHA1 node_modules/.bin/_mocha --reporter mocha-junit-reporter
       - run:
           name: Login to Docker Hub
           environment:

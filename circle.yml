@@ -10,10 +10,9 @@ jobs:
           command: docker build -t dsalgle/gps-test:$CIRCLE_SHA1 .
       - run:
           name: Start Containers
-          command:
-            docker-compose up:
-              environment:
-                DOCKER_IMAGE_TAG: $CIRCLE_SHA1
+          environment:
+            DOCKER_IMAGE_TAG: $CIRCLE_SHA1
+          command: docker-compose up
       - run: mkdir -p $TEST_REPORT_DIR
       - run:
           name: Run Tests

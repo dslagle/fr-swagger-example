@@ -10,7 +10,7 @@ jobs:
           command: docker build -t dsalgle/gps-test:$CIRCLE_SHA1 .
       - run:
           name: Start Redis
-          command: docker run --name redis redis:3.0.7
+          command: docker run --name -d redis redis:3.0.7
       - run: mkdir -p ~/app/test-results
       - run:
           name: Run Tests

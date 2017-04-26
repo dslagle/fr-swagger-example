@@ -4,14 +4,40 @@ import { Validator, ValidatorResult } from "jsonschema"
 import { GPS_SET } from "../schema";
 import * as moment from "moment";
 import { GPS } from "../model/gps";
+import { createClient, RedisClient } from "redis";
+
+const redis: RedisClient = createClient({
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT
+});
 
 export const router: Router = express.Router();
 
 router.post("/", (request, response) => {
     const gps: GPS[] = request.body;
-    console.log(gps.length);
+    const batch = redis.multi();
+    for (const g of gps) {
+        batch.hmset(`${g.DeviceID}${g.ActualDateTime}`, g);
+    }
+    batch.exec((err) => {
+        if (err) {
+            response.status(500).json({ error: err });
+        }
+        else {
+            response.status(200).json({ success: "true" });
+        }
+    })
+});
 
-    response.status(200).json({ success: "true" });
+router.get("/:key", (request, response) => {
+    redis.hgetall(request.params.key, (err, obj) => {
+        if (err) {
+            response.status(500).json({ error: err });
+        }
+        else {
+            response.json(obj);
+        }
+    });
 });
 
 router.get("/", (request, response) => {

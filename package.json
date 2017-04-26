@@ -19,12 +19,15 @@
     "jsonschema": "^1.1.1",
     "mocha": "^3.3.0",
     "mocha-junit-reporter": "^1.13.0",
-    "moment": "^2.18.1"
+    "moment": "^2.18.1",
+    "redis": "^2.7.1"
   },
   "devDependencies": {
     "@types/body-parser": "^1.16.3",
     "@types/chai": "^3.5.1",
     "@types/express": "^4.0.35",
+    "@types/redis": "^0.12.36",
+    "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-typescript": "^3.1.6",
     "typescript": "^2.2.2"

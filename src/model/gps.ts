@@ -2,8 +2,8 @@ import { Moment } from "moment";
 
 export class GPS {
     DeviceID: Number;
-    ActualDateTime: Moment;
-    ReceivedDateTime: Moment;
+    ActualDateTime: String;
+    ReceivedDateTime: String;
     Latitude: Number;
     Longitude: Number;
     Heading: Number;

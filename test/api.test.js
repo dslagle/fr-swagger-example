@@ -2,7 +2,6 @@ const chai = require("chai");
 const http = require("chai-http");
 
 const schema = new require("../public/schema/index");
-
 const server = require("../public/app").app;
 
 chai.should();
@@ -26,9 +25,17 @@ describe("Sample Test", () => {
         chai.request(server)
             .get("/gps")
             .end((err, response) => {
-                if (err) console.erro(err);
+                if (err) console.error(err);
                 else {
-                    schema.validator.validate(response.body, schema.SCHEMAS.GPS).valid.should.equal(true);
+                    const result = schema.validator.validate(response.body, schema.SCHEMAS.GPS.schema)
+                    
+                    if (!result.valid) {
+                        throw new Error(result.errors.reduce((e1, e2) => {
+                            return `${e1}\n${e2}`;
+                        }, ''));
+                    }
+
+                    result.valid.should.be.true;
                 }
 
                 done();

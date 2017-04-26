@@ -1,11 +1,33 @@
-machine:
-  environment:
-    MOCHA_FILE: $CIRCLE_TEST_REPORTS/mocha/test-results.xml
-  services:
-    - docker
+version: 2
+jobs:
+  build:
+    working_directory: ~/app
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Build Docker Image
+          command: docker build -t dsalgle/gps-test:$CIRCLE_SHA1 .
+      - run:
+          name: Run Tests
+          environment:
+            TEST_REPORT_DIR: ~/app/test-results
+            MOCHA_FILE: $TEST_REPORT_DIR/result.xml
+          commands:
+            - mkdir -p $TEST_REPORT_DIR
+            - docker run gps-test node_modules/.bin/_mocha --reporter mocha-junit-reporter
+      - run:
+          name: Push to Docker Hub
+          environment:
+            DOCKER_EMAIL: slagle.derek@gmail.com
+            DOCKER_USER: dslagle
+          commands:
+            - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASSWORD
+            - docker push dslagle/gps-test:$CIRCLE_SHA1
+            - docker logout
+      - run:
+          name: Deploy to AWS
+          commands:
+            - aws configure set default.region us-east-1
+            - aws configure set default.output json
 
-test:
-  override:
-    - docker build -t gps-test .
-    - mkdir -p $CIRCLE_TEST_REPORTS/mocha
-    - docker run gps-test node_modules/.bin/_mocha --reporter mocha-junit-reporter

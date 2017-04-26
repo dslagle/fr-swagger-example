@@ -1,0 +1,14 @@
+version: "3"
+services:
+  api:
+    image: dslagle/acl_api:1.0.0
+    links:
+      - "redis"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - 8080:8080
+  redis:
+    image: redis:3.0.7
+    

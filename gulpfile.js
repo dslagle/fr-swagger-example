@@ -1,23 +1,21 @@
 const gulp = require("gulp");
 const tsc = require("gulp-typescript");
-const clean = require("gulp-clean");
+const del = require("del");
 
-gulp.task("compile-dev", () => {
+gulp.task("build-dev", () => {
     const project = tsc.createProject("./tsconfig.dev.json");
 
-    gulp.src(`${project.config.compilerOptions.outDir}/**/*.js`, { read: false })
-        .pipe(clean());
+    del.sync(`${project.config.compilerOptions.outDir}/**/*.js`);
 
-    return project.src()
+    project.src()
         .pipe(project()).js
         .pipe(gulp.dest(project.config.compilerOptions.outDir));
 });
 
-gulp.task("compile-prod", () => {
+gulp.task("build-prod", () => {
     const project = tsc.createProject("./tsconfig.prod.json");
 
-   gulp.src(`${project.config.compilerOptions.outDir}/**/*`, { read: false })
-        .pipe(clean()); 
+    del.sync(`${project.config.compilerOptions.outDir}/**/*`);
 
     project.src()
         .pipe(project()).js
@@ -26,3 +24,5 @@ gulp.task("compile-prod", () => {
     gulp.src("src/**/*.json", { base: "src" })
         .pipe(gulp.dest(project.config.compilerOptions.outDir));
 });
+
+gulp.task("build", ["build-dev", "build-prod"]);

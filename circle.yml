@@ -14,7 +14,8 @@ jobs:
             TEST_REPORT_DIR: ~/app/test-results
             MOCHA_FILE: $TEST_REPORT_DIR/result.xml
           command: |
-            mkdir -p ~/app/test-results
+            mkdir -p $TEST_REPORT_DIR
+            echo Build Image dsalgle/gps-test:$CIRCLE_SHA1
             docker build -t dsalgle/gps-test:$CIRCLE_SHA1 .
             docker run --link redis --rm dslagle/gps-test:$CIRCLE_SHA1 node_modules/.bin/_mocha --reporter mocha-junit-reporter
       - run:

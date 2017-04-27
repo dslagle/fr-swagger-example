@@ -10,22 +10,25 @@ jobs:
           environment:
             TEST_REPORT_DIR: ~/app/test-results
             MOCHA_FILE: $TEST_REPORT_DIR/result.xml
+            DOCKER_IMAGE_TAG: $CIRCLE_SHA1
           command: |
-            docker run -d --name redis redis:3.0.7
             mkdir -p $TEST_REPORT_DIR
-            docker build -t dslagle/gps-test:$CIRCLE_SHA1 .
-            docker run --link redis --rm dslagle/gps-test:$CIRCLE_SHA1 node_modules/.bin/_mocha --reporter mocha-junit-reporter
+            docker-compose -f docker-compose.test.yml up -d
       - run:
           name: Push to Docker Hub
           environment:
             DOCKER_EMAIL: slagle.derek@gmail.com
             DOCKER_USER: dslagle
           command: |
-            docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASSWORD
+            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
             docker push dslagle/gps-test:$CIRCLE_SHA1
             docker logout
       - run:
           name: Deploy to AWS
+          environment:
+            DOCKER_IMAGE_TAG: $CIRCLE_SHA1
           command: |
-            aws configure set default.region us-east-1
-            aws configure set default.output json
+            sudo curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-linux-amd64-latest
+            sudo chmod +x /usr/local/bin/ecs-cli
+            ecs-cli configure --region us-east-1
+            ecs-cli compose -f docker-compose.prod.yml -p frsd up

@@ -6,28 +6,28 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build Docker Image
-          command: docker build -t dsalgle/gps-test:$CIRCLE_SHA1 .
-      - run:
           name: Start Redis
           command: docker run -d --name redis redis:3.0.7
-      - run: mkdir -p ~/app/test-results
       - run:
           name: Run Tests
           environment:
             TEST_REPORT_DIR: ~/app/test-results
             MOCHA_FILE: $TEST_REPORT_DIR/result.xml
-          command: docker run --link redis --rm dslagle/gps-test:$CIRCLE_SHA1 node_modules/.bin/_mocha --reporter mocha-junit-reporter
+          command: |
+            mkdir -p ~/app/test-results
+            docker build -t dsalgle/gps-test:$CIRCLE_SHA1 .
+            docker run --link redis --rm dslagle/gps-test:$CIRCLE_SHA1 node_modules/.bin/_mocha --reporter mocha-junit-reporter
       - run:
-          name: Login to Docker Hub
+          name: Push to Docker Hub
           environment:
             DOCKER_EMAIL: slagle.derek@gmail.com
             DOCKER_USER: dslagle
-          command: docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASSWORD
+          command: |
+            docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASSWORD
+            docker push dslagle/gps-test:$CIRCLE_SHA1
+            docker logout
       - run:
-          name: Push to Docker
-          command: docker push dslagle/gps-test:$CIRCLE_SHA1
-      - run: docker logout
-      - run: aws configure set default.region us-east-1
-      - run: aws configure set default.output json
-
+          name: Deploy to AWS
+          command: |
+            aws configure set default.region us-east-1
+            aws configure set default.output json

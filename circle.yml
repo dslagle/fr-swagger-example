@@ -13,9 +13,7 @@ jobs:
           command: |
             docker run -d --name redis redis:3.0.7
             mkdir -p $TEST_REPORT_DIR
-            echo Build Image dsalgle/gps-test:$CIRCLE_SHA1
-            docker build -t dsalgle/gps-test:$CIRCLE_SHA1 .
-            docker images
+            docker build -t dslagle/gps-test:$CIRCLE_SHA1 .
             docker run --link redis --rm dslagle/gps-test:$CIRCLE_SHA1 node_modules/.bin/_mocha --reporter mocha-junit-reporter
       - run:
           name: Push to Docker Hub

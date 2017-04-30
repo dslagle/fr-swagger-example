@@ -2,12 +2,25 @@ const chai = require("chai");
 const http = require("chai-http");
 
 const schema = new require("../public/schema/index");
-const server = require("../public/app").app;
 
 const expect = chai.expect;
 chai.use(http);
 
+let Redis = require("./mock/redis").Redis;
+let App = require("../public/app").App;
+
+let redis;
+let server;
+
 describe("Sample Test", () => {
+    before(() => {
+        redis = new Redis();
+
+        const app = new App(redis);
+        app.run();
+        server = app.server;
+    });
+
     it("post valid /gps should return 200", (done) => {
         chai.request(server)
             .post("/gps")

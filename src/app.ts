@@ -5,17 +5,27 @@ import { Application } from "express";
 import { urlencoded, json } from "body-parser";
 import { Routes } from "./routes";
 import { SchemaMiddleware, SCHEMAS } from "./schema";
+import { Redis } from "ioredis";
 
-const PORT = 8080;
-const IP = "0.0.0.0";
+const PORT = process.env.LISTEN_PORT || 8080;
+const IP = process.env.LISTEN_ADDR || "0.0.0.0";
 
-export const app: Application = express();
-const server = http.createServer(app);
+export class App {
+    constructor(private redis: Redis) { }
 
-app.use(urlencoded({ extended: true }));
-app.use(json());
+    server: http.Server;
 
-app.use("/trip", SchemaMiddleware(SCHEMAS.TRIP_SET), Routes.TripRouter);
-app.use("/gps", SchemaMiddleware(SCHEMAS.GPS_SET), Routes.GPSRouter);
+    run(): void {
+        const app: Application = express();
+        
+        this.server = http.createServer(app);
 
-server.listen(PORT, IP);
+        app.use(urlencoded({ extended: true }));
+        app.use(json());
+
+        app.use("/trip", SchemaMiddleware(SCHEMAS.TRIP_SET), Routes.TripRouter(this.redis));
+        app.use("/gps", SchemaMiddleware(SCHEMAS.GPS_SET), Routes.GPSRouter(this.redis));
+
+        this.server.listen(PORT, IP);
+    };
+}

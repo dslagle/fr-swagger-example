@@ -1,12 +1,12 @@
-FROM node:7.9-alpine
+FROM node:7.9-slim
 
 COPY . /app
 WORKDIR /app
 
 ENV NODE_ENV production
-RUN npm install &>/dev/null
+RUN npm install
 
-ENV REDIS_HOST redis
+ENV REDIS_HOST my-redis
 ENV REDIS_PORT 6379
 
-CMD ["node", "public/app.js"]
+CMD ["node", "public/main.js"]

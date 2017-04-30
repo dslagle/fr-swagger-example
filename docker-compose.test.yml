@@ -8,9 +8,6 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - MOCHA_FILE=$MOCHA_FILE
-    ports:
-      - 8080:8080
-    command: node_modules/.bin/_mocha --reporter mocha-junit-reporter
+    command: node_modules/.bin/_mocha
   redis:
     image: redis:3.0.7

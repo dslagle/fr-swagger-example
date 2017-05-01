@@ -1,0 +1,28 @@
+version: "3"
+services:
+  rabbit1:
+    image: rabbit:3.6.9
+    hostname: rabbit1
+    environment:
+      - RABBIT_MQ_ERLANG_COOKIE=rabbitmq_secret_key
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  rabbit2:
+    image: rabbit:3.6.9
+    hostname: rabbit2
+    environment:
+      - RABBIT_MQ_ERLANG_COOKIE=rabbitmq_secret_key
+    command: ./rabbit.startup.sh
+
+  rabbit3:
+    image: rabbit:3.6.9
+    hostname: rabbit3
+    environment:
+      - RABBIT_MQ_ERLANG_COOKIE=rabbitmq_secret_key
+    command: ./rabbit.startup.sh
+
+networks:
+  frsdnet-v2:
+    driver: overlay

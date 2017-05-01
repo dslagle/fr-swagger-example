@@ -1,0 +1,21 @@
+version: "3"
+services:
+  gps-api-v2:
+    image: dslagle/gps-test:$DOCKER_IMAGE_TAG
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - 9090:9090
+    depends_on:
+      - redis
+    networks:
+      - frsdnet
+  redis-v2:
+    image: redis:3.0.7
+    networks:
+      - frsdnet
+
+networks:
+  frsdnet-v2:
+    driver: overlay

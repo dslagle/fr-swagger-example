@@ -10,11 +10,11 @@ services:
     depends_on:
       - redis
     networks:
-      - frsdnet
+      - frsdnet-v2
   redis-v2:
     image: redis:3.0.7
     networks:
-      - frsdnet
+      - frsdnet-v2
 
 networks:
   frsdnet-v2:

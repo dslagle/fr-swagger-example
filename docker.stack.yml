@@ -3,12 +3,12 @@ services:
   gps-api-v2:
     image: dslagle/gps-test:$DOCKER_IMAGE_TAG
     environment:
-      - REDIS_HOST=redis
+      - REDIS_HOST=redis-v2
       - REDIS_PORT=6379
     ports:
       - 9090:9090
     depends_on:
-      - redis
+      - redis-v2
     networks:
       - frsdnet-v2
   redis-v2:

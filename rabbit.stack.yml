@@ -20,15 +20,6 @@ services:
     networks:
       - frsdnet-v2
 
-  rabbit3:
-    image: rabbitmq:3.6.9
-    hostname: rabbit3
-    environment:
-      - RABBITMQ_ERLANG_COOKIE=rabbitmq_secret_key
-    command: /bin/bash -c "rabbitmqctl stop_app && rabbitmqctl join_cluster rabbit1 && rabbitmqctl start_app"
-    networks:
-      - frsdnet-v2
-
 networks:
   frsdnet-v2:
     driver: overlay

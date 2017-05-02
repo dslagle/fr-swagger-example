@@ -12,7 +12,7 @@ services:
       - frsdnet-v2
 
   rabbit2:
-    image: dslagle/my-rabbit
+    image: dslagle/my-rabbit:2.0.0
     hostname: rabbit2
     environment:
       - RABBITMQ_ERLANG_COOKIE=rabbit_secret

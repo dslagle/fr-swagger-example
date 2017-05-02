@@ -1,12 +1,5 @@
-FROM node:7.9-slim
+FROM rabbitmq:3.6.9
 
-COPY . /app
-WORKDIR /app
+COPY ./entry.sh entry.sh
 
-ENV NODE_ENV production
-RUN npm install
-
-ENV REDIS_HOST my-redis
-ENV REDIS_PORT 6379
-
-CMD ["node", "public/main.js"]
+CMD entry.sh

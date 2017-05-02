@@ -12,11 +12,10 @@ services:
       - frsdnet-v2
 
   rabbit2:
-    image: rabbitmq:3.6.9
+    image: dslagle/my-rabbit
     hostname: rabbit2
     environment:
       - RABBITMQ_ERLANG_COOKIE=rabbitmq_secret_key
-    command: /bin/bash -c "rabbitmqctl stop_app && rabbitmqctl join_cluster rabbit@rabbit1 && rabbitmqctl start_app"
     networks:
       - frsdnet-v2
 

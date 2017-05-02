@@ -4,7 +4,7 @@ services:
     image: rabbitmq:3.6.9
     hostname: rabbit1
     environment:
-      - RABBIT_MQ_ERLANG_COOKIE=rabbitmq_secret_key
+      - RABBITMQ_ERLANG_COOKIE=rabbitmq_secret_key
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -15,7 +15,7 @@ services:
     image: rabbitmq:3.6.9
     hostname: rabbit2
     environment:
-      - RABBIT_MQ_ERLANG_COOKIE=rabbitmq_secret_key
+      - RABBITMQ_ERLANG_COOKIE=rabbitmq_secret_key
     command: /bin/bash -c "rabbitmqctl stop_app && rabbitmqctl join_cluster rabbit1 && rabbitmqctl start_app"
     networks:
       - frsdnet-v2
@@ -24,7 +24,7 @@ services:
     image: rabbitmq:3.6.9
     hostname: rabbit3
     environment:
-      - RABBIT_MQ_ERLANG_COOKIE=rabbitmq_secret_key
+      - RABBITMQ_ERLANG_COOKIE=rabbitmq_secret_key
     command: /bin/bash -c "rabbitmqctl stop_app && rabbitmqctl join_cluster rabbit1 && rabbitmqctl start_app"
     networks:
       - frsdnet-v2

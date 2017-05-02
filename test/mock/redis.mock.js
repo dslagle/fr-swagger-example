@@ -26,4 +26,4 @@ Redis.prototype.hgetall = function(key, cb) {
     }
 }
 
-module.exports = { Redis };
+module.exports = Redis;

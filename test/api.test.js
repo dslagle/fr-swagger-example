@@ -1,20 +1,20 @@
 const chai = require("chai");
 const http = require("chai-http");
 
-const schema = new require("../public/schema/index");
+const { SCHEMAS, validator } = require("../public/schema/index");
 
 const expect = chai.expect;
 chai.use(http);
 
-let Redis = require("./mock/redis").Redis;
-let App = require("../public/app").App;
+const mocks = require("./mock/index");
+const App = require("../public/app").App;
 
 let redis;
 let server;
 
 describe("Sample Test", () => {
     before(() => {
-        redis = new Redis();
+        redis = new mocks.Redis();
 
         const app = new App(redis);
         app.run();
@@ -49,7 +49,7 @@ describe("Sample Test", () => {
             .get("/gps")
             .end((err, response) => {
                 expect(err).to.be.null;
-                expect(schema.validator.validate(response.body, schema.SCHEMAS.GPS).valid).to.be.true;
+                expect(validator.validate(response.body, SCHEMAS.GPS).valid).to.be.true;
                 
                 done();
             });
